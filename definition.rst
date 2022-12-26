@@ -30,7 +30,7 @@ We define a **link** as dictionary of the form ``{link_key: link_value}``, where
     4. Links CAN NOT contain other links.
     5. Two nodes are **linked** if the ``node_key`` of the first node is in the ``node_value`` of the second node.
 
-The following are node and linkded nodes examples:
+The following are node and linked nodes examples:
 
     - ``{0: None}`` a node with key ``0`` and no attributes
     - ``{0: {"label": "node0"}}`` a node with key ``0`` and an attribute ``"label"`` with value ``"node0"``
@@ -52,38 +52,35 @@ A **graph** of the form ``{graph_key: graph_value}`` has many properties. Here t
     7. All nodes MUST be linked to the graph.
     8. A graph is **empty** is it has no nodes.
 
-We can construct the simplest non-empty linked graph with one node and one link the following way:
+Using Python dictionaries we can construct *the simplest non-empty linked graph* with one node and one link in three steps:
 
-    1. Create a node ``{0: None}`` (order 0)
-    2. Add a link to itself ``{0: {0: None}}`` (order 1)
-    3. Create a graph ``{0: {0: {0: None}}}`` (order 2)
+    1. Create a graph ``{0: None}`` (order 0)
+    2. Add a node ``{0: {0: None}}`` (order 1)
+    2. Add a link to itself ``{0: {0: {0: None}}}`` (order 2)
 
-Graphs can be represented in *Python* using nested dictionaries of order less than 3. The following are examples of graphs:
+The following are examples of graphs:
 
     - ``{0: None}`` is an empty graph
-    - ``{0: {0: None}}`` is a graph that contains a **node** with key ``0``
+    - ``{0: {0: None}}`` is a graph that contains a node with key ``0``
     - ``{0: {0: None, 1: None}}`` is a graph that contains nodes with keys ``0`` and ``1``
-    - ``{0: {0: {1: None}, 1: None}}`` is a graph that contains 2 nodes and a **link** from node ``0`` to node ``1``
+    - ``{0: {0: {1: None}, 1: None}}`` is a graph that contains 2 nodes and a link from node ``0`` to node ``1``
     - ``{0: {0: {1: None}, 1: {0: None}}}`` is a graph that contains 2 nodes and two links: from node 0 to node 1 and from node 1 to node 0
     - ``{0: {0: {0:, None, 1: None}, 1: {0: None, 1: None}}}`` is a **complete graph** (a graph with all possible links between it's nodes). It contains:
         - Two nodes: node ``0`` and node ``1``
         - Two links: from node ``0`` to node ``1`` and from node ``1`` to node ``0``
         - Two **looping links**: from node ``0`` to node ``0`` and from node ``1`` to node ``1``
 
-Under this definition, all graphs are **directed graphs**. In other words, the links are one-way. If we want to create a bidirectional graph, we need to add the inverse link. For example:
+Under this definition, all graphs are **directed graphs**. In other words, the links are one-way.
 
     - A directed graph with 2 nodes and 2 links ``{0: {0: {1: None}, 1: {0: None}}}``
     - A directed graph with 3 nodes and 4 links ``{0: {0: {1: None, 2: None}, 1: {0: None}, 2: {0: None}}}``
     - A **directed binary tree** of 3 levels: ``{0: {0: {1: None, 2: None}, 1: {3: None, 4: None}, 2: {5: None, 6: None}, 3: None, 4: None, 5: None, 6: None}}``
-    - A **triangle** graph: ``{0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None}}}`` this is a bidirectional graph with 3 nodes and 6 links
-    - A **complete graph** (a triangle plus a vertex): ``{0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None, 3: None}, 3: {2: None}}}`` this is a bidirectional graph with 4 nodes and 12 links
 
-This means that an **undirected graph** is a **directed graph** with **bidirectional** links. For example:
+This means that an **undirected graph** is a graph with **bidirectional** links. If we want to create an undirected graph, we need to add inverted links. For example:
 
-    - A undirected graph with 2 nodes and 1 link ``{0: {0: {1: None}, 1: {0: None}}}`` is a directed graph with 2 nodes and 2 links
-    - A undirected graph with 3 nodes and 2 links ``{0: {0: {1: None, 2: None}, 1: {0: None}, 2: {0: None}}}`` is a directed graph with 3 nodes and 4 links
-
-A graph is **complete** if it has **all** the possible links. For example:
-
+    - An undirected graph with 2 nodes and 1 link ``{0: {0: {1: None}, 1: {0: None}}}``
+    - An undirected graph with 3 nodes and 2 links ``{0: {0: {1: None, 2: None}, 1: {0: None}, 2: {0: None}}}``
+    - An undirected **triangle** graph: ``{0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None}}}``
+    - A **complete graph** (a triangle plus a vertex): ``{0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None, 3: None}, 3: {2: None}}}``
     - A complete graph with 3 nodes: ``{0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None}}``
     - A complete graph with 4 nodes: ``{0: {1: None, 2: None, 3: None}, 1: {0: None, 2: None, 3: None}, 2: {0: None, 1: None, 3: None}, 3: {0: None, 1: None, 2: None}}``
