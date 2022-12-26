@@ -4,7 +4,7 @@
 Nested Dictionary
 +++++++++++++++++
 
-A **nested dictionary** has values of type dictionary. This means that it is possible to define a contain relation between dictionaries, like this one:
+A **nested dictionary** has values of a "type" ``dictionary``. This means that it is possible to define a contain relation between dictionaries, like this one:
 
     - ``{0: None}`` has **order 0** (it's not nested)
     - ``{0: {0:None}}`` has **order 1** (it's nested once)
@@ -18,14 +18,14 @@ Nodes and Links
 A **node** as a nested dictionary of the form ``{node_key: node_value}``, where:
 
     1. ``node_key`` is an ``integer``.
-    2. ``node_value`` is dictionary that contains node's attributes, or a ``None`` type.
+    2. ``node_value`` is a dictionary that contains the node's attributes, or a ``None`` type.
     3. ``node_value`` has order 0 or 1.
     4. ``node_value`` can contain links.
 
 We define a **link** as dictionary of the form ``{link_key: link_value}``, where:
 
     1. ``link_key`` is an ``integer`` corresponding to a node key.
-    2. ``link_value`` is a dictionary that contains link's attributes, or a ``None`` type.
+    2. ``link_value`` is a dictionary that contains the link's attributes, or a ``None`` type.
     3. Links CAN NOT contain nodes.
     4. Links CAN NOT contain other links.
     5. Two nodes are **linked** if the ``node_key`` of the first node is in the ``node_value`` of the second node.
@@ -41,16 +41,16 @@ The following are node and linked nodes examples:
 Graphs
 ++++++
 
-A **graph** of the form ``{graph_key: graph_value}`` has many properties. Here the most important ones:
+A **graph** of the form ``{graph_key: graph_value}`` has many properties. Here are the most important ones:
 
     1. ``graph_key`` is an ``integer``.
     2. ``graph_value`` is a dictionary that contains nodes.
-    3. ``graph_value`` can contain other graphs or graph's attributes.
+    3. ``graph_value`` can contain other graphs or graph attributes.
     4. ``graph_value`` can be ``None`` type.
     5. ``graph_value`` has order 0 or 1.
     6. Nodes in ``graph_value`` are UNIQUE.
     7. All nodes MUST be linked to the graph.
-    8. A graph is **empty** is it has no nodes.
+    8. A graph is **empty** if it has no nodes.
 
 Using Python dictionaries we can construct *the simplest non-empty linked graph* with one node and one link in three steps:
 
@@ -65,7 +65,7 @@ The following are examples of graphs:
     - ``{0: {0: None, 1: None}}`` is a graph that contains nodes with keys ``0`` and ``1``
     - ``{0: {0: {1: None}, 1: None}}`` is a graph that contains 2 nodes and a link from node ``0`` to node ``1``
     - ``{0: {0: {1: None}, 1: {0: None}}}`` is a graph that contains 2 nodes and two links: from node 0 to node 1 and from node 1 to node 0
-    - ``{0: {0: {0:, None, 1: None}, 1: {0: None, 1: None}}}`` is a **complete graph** (a graph with all possible links between it's nodes). It contains:
+    - ``{0: {0: {0:, None, 1: None}, 1: {0: None, 1: None}}}`` is a **complete graph** (a graph with all possible links between its nodes). It contains:
         - Two nodes: node ``0`` and node ``1``
         - Two links: from node ``0`` to node ``1`` and from node ``1`` to node ``0``
         - Two **looping links**: from node ``0`` to node ``0`` and from node ``1`` to node ``1``
