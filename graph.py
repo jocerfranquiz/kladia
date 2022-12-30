@@ -1,3 +1,10 @@
+"""
+This module contains all the classes and functions for the construction of graphs.
+author: @jocerfranquiz
+date: 2022-12-31
+version: 0.0.1
+"""
+
 GRAPH_LABEL = "graph"
 
 
@@ -231,3 +238,5 @@ if __name__ == '__main__':
         2: {0: {'label': 'edge3'}},
     }})
     print(f'triangular_graph edges: {triangular_graph.edges()}')
+
+
