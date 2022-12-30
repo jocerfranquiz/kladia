@@ -43,44 +43,42 @@ Graphs
 
 A **graph** of the form ``{graph_key: graph_value}`` has many properties. Here are the most important ones:
 
-    1. ``graph_key`` is an ``integer``.
-    2. ``graph_value`` is a dictionary that contains nodes.
-    3. ``graph_value`` can contain other graphs or graph attributes.
+    1. ``graph_key`` is a string *label* (``'graph'``).
+    2. ``graph_value`` is a dictionary that contains nodes with links.
+    3. ``graph_value`` can contain other graph attributes as ``key:value`` pairs.
     4. ``graph_value`` can be ``None`` type.
-    5. ``graph_value`` has order 0 or 1.
+    5. ``graph_value`` has **maximum order of 2**, i.e. it can contain nodes and links, but nodes can not contain other nodes.
     6. Nodes in ``graph_value`` are UNIQUE.
-    7. All nodes MUST be linked to the graph.
-    8. A graph is **empty** if it has no nodes.
 
 Using Python dictionaries we can construct *the simplest non-empty linked graph* with one node and one link in three steps:
 
-    1. Create a graph ``{0: None}`` (order 0)
-    2. Add a node ``{0: {0: None}}`` (order 1)
-    2. Add a link to itself ``{0: {0: {0: None}}}`` (order 2)
+    1. Create a graph ``{'graph': None}`` (order 0)
+    2. Add a node ``{'graph': {0: None}}`` (order 1)
+    2. Add a link to itself ``{'graph': {0: {0: None}}}`` (order 2)
 
 The following are examples of graphs:
 
-    - ``{0: None}`` is an empty graph
-    - ``{0: {0: None}}`` is a graph that contains a node with key ``0``
-    - ``{0: {0: None, 1: None}}`` is a graph that contains nodes with keys ``0`` and ``1``
-    - ``{0: {0: {1: None}, 1: None}}`` is a graph that contains 2 nodes and a link from node ``0`` to node ``1``
-    - ``{0: {0: {1: None}, 1: {0: None}}}`` is a graph that contains 2 nodes and two links: from node 0 to node 1 and from node 1 to node 0
-    - ``{0: {0: {0:, None, 1: None}, 1: {0: None, 1: None}}}`` is a **complete graph** (a graph with all possible links between its nodes). It contains:
+    - ``{'graph': None}`` is an empty graph
+    - ``{'graph': {0: None}}`` is a graph that contains a node with key ``0``
+    - ``{'graph': {0: None, 1: None}}`` is a graph that contains nodes with keys ``0`` and ``1``
+    - ``{'graph': {0: {1: None}, 1: None}}`` is a graph that contains 2 nodes and a link from node ``0`` to node ``1``
+    - ``{'graph': {0: {1: None}, 1: {0: None}}}`` is a graph that contains 2 nodes and two links: from node 0 to node 1 and from node 1 to node 0
+    - ``{'graph': {0: {0:, None, 1: None}, 1: {0: None, 1: None}}}`` is a **complete graph** (a graph with all possible links between its nodes). It contains:
         - Two nodes: node ``0`` and node ``1``
         - Two links: from node ``0`` to node ``1`` and from node ``1`` to node ``0``
         - Two **looping links**: from node ``0`` to node ``0`` and from node ``1`` to node ``1``
 
 Under this definition, all graphs are **directed graphs**. In other words, the links are one-way.
 
-    - A directed graph with 2 nodes and 2 links ``{0: {0: {1: None}, 1: {0: None}}}``
-    - A directed graph with 3 nodes and 4 links ``{0: {0: {1: None, 2: None}, 1: {0: None}, 2: {0: None}}}``
-    - A **directed binary tree** of 3 levels: ``{0: {0: {1: None, 2: None}, 1: {3: None, 4: None}, 2: {5: None, 6: None}, 3: None, 4: None, 5: None, 6: None}}``
+    - A directed graph with 2 nodes and 2 links ``{'graph': {0: {1: None}, 1: {0: None}}}``
+    - A directed graph with 3 nodes and 4 links ``{'graph': {0: {1: None, 2: None}, 1: {0: None}, 2: {0: None}}}``
+    - A **directed binary tree** of 3 levels: ``{'graph': {0: {1: None, 2: None}, 1: {3: None, 4: None}, 2: {5: None, 6: None}, 3: None, 4: None, 5: None, 6: None}}``
 
 This means that an **undirected graph** is a graph with **bidirectional** links. If we want to create an undirected graph, we need to add inverted links. For example:
 
-    - An undirected graph with 2 nodes and 1 link ``{0: {0: {1: None}, 1: {0: None}}}``
-    - An undirected graph with 3 nodes and 2 links ``{0: {0: {1: None, 2: None}, 1: {0: None}, 2: {0: None}}}``
-    - An undirected **triangle** graph: ``{0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None}}}``
+    - An undirected graph with 2 nodes and 1 link ``{'graph': {0: {1: None}, 1: {0: None}}}``
+    - An undirected graph with 3 nodes and 2 links ``{'graph': {0: {1: None, 2: None}, 1: {0: None}, 2: {0: None}}}``
+    - An undirected **triangle** graph: ``{'graph': {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None}}}``
     - A **complete graph** (a triangle plus a vertex): ``{0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None, 3: None}, 3: {2: None}}}``
-    - A complete graph with 3 nodes: ``{0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None}}``
-    - A complete graph with 4 nodes: ``{0: {1: None, 2: None, 3: None}, 1: {0: None, 2: None, 3: None}, 2: {0: None, 1: None, 3: None}, 3: {0: None, 1: None, 2: None}}``
+    - A complete graph with 3 nodes: ``{'graph': {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None}}``
+    - A complete graph with 4 nodes: ``{'graph': {1: None, 2: None, 3: None}, 1: {0: None, 2: None, 3: None}, 2: {0: None, 1: None, 3: None}, 3: {0: None, 1: None, 2: None}}``
