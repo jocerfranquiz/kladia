@@ -26,6 +26,7 @@ Kladia helps you to create and manipulate these graphs in a simple way.
     print({g.to_dict()})  # {'graph': {0: {'color': 'red', 0: {'weight': 1}}}}
     
 For convenience, Graph class only manage dictionaries for graphs, nodes and links. Properties has not restrictions whatsoever. 
+Feel free to review the notes in [NOTES.rst](https://raw.githubusercontent.com/jocerfranquiz/kladia/main/NOTES.rst) for more information.
 
 ## Why Kladia?
 
