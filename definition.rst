@@ -1,16 +1,19 @@
-*Kladia:* A simple structure for graphs in Python
--------------------------------------------------
+*Kladia notes:* How to make a simple structure for graphs in Python?
+-------------------------------------------------------------------
 
-Nested Dictionary
-+++++++++++++++++
+Nested Dictionaries
++++++++++++++++++++
 
-A **nested dictionary** has values of a "type" ``dictionary``. This means that it is possible to define a contain relation between dictionaries, like this one:
+A **nested dictionary** in Python has values of a "type" ``dictionary``. This means that it is possible
+to define a contain relation between dictionaries, like this one:
 
     - ``{0: None}`` has **order 0** (it's not nested)
     - ``{0: {0:None}}`` has **order 1** (it's nested once)
     - ``{0: {0: {0: None}}}`` has **order 2** (it's nested twice)
 
 Hence, the **order** on a nested dictionary is the number of times that is nested.
+
+We are going to use nested dictionaries to define our graphs, nodes and links between nodes.
 
 Nodes and Links
 +++++++++++++++
