@@ -196,6 +196,11 @@ class Graph:
 
 
 if __name__ == '__main__':
+    g = Graph()
+    g.add(0, {'color': 'red'})
+    g.add((0, 0), {'weight': 1})
+    print(f"Graph: {g.to_dict()}")
+
     # Test add_node
     g1 = Graph()
     g1.add(0, {'name': 'Node 0'})
