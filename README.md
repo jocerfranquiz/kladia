@@ -6,16 +6,26 @@ be adapted to any other graph library.
 
 ## But how?
 
-Using Python dictionaries we can construct *the simplest non-empty linked graph* with one node and one link in three steps:
+Using ONLY Python dictionaries we can construct **the simplest non-empty linked graph** with one node and one link in three steps:
 
-    1. Create a graph ``{'graph': None}``
-    2. Add a node ``{'graph': {0: None}}``
-    2. Add a link to itself ``{'graph': {0: {0: None}}}``
+    1. Create a graph {'graph': None}
+    2. Add a node {'graph': {0: None}}
+    2. Add a link to itself {'graph': {0: {0: None}}}
 
 Then, we can replace the ``None`` values with desired properties or data. For example, we can add a node with a
 property ``{'graph': {0: {'color': 'red'}}}`` or a link with a property ``{'graph': {0: {0: {'weight': 1}}}}``.
 
 Kladia helps you to create and manipulate these graphs in a simple way.
+
+    from kladia import graph
+    
+    g = graph()  # create an empty graph
+    g.add(0, {'color': 'red'})  # add a node with a property
+    g.add((0, 0), {'weight': 1})  ## add a looping link with a property
+    
+    print({g.to_dict()})  # {'graph': {0: {'color': 'red', 0: {'weight': 1}}}}
+    
+For convinience, Graph class only manage dictionaries for graphs, nodes and links. Properties has not restrictions whatsoever. 
 
 ## Why Kladia?
 
