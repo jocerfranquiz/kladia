@@ -10,7 +10,7 @@ Using ONLY Python dictionaries we can construct **the simplest non-empty linked 
 
     1. Create a graph {'graph': None}
     2. Add a node {'graph': {0: None}}
-    2. Add a link to itself {'graph': {0: {0: None}}}
+    2. Add a link of the node to itself {'graph': {0: {0: None}}}
 
 Then, we can replace the ``None`` values with desired properties or data. For example, we can add a node with a
 property ``{'graph': {0: {'color': 'red'}}}`` or a link with a property ``{'graph': {0: {0: {'weight': 1}}}}``.
@@ -25,11 +25,11 @@ Kladia helps you to create and manipulate these graphs in a simple way.
     
     print({g.to_dict()})  # {'graph': {0: {'color': 'red', 0: {'weight': 1}}}}
     
-For convinience, Graph class only manage dictionaries for graphs, nodes and links. Properties has not restrictions whatsoever. 
+For convenience, Graph class only manage dictionaries for graphs, nodes and links. Properties has not restrictions whatsoever. 
 
 ## Why Kladia?
 
-**Kladia**  🌿 is the latinisation of the greek word **κλαδιά**, that means *branch* or *twig*. It is also the name of a genus of plants that includes
+**Kladia**  🌿 is the latinization of the greek word **κλαδιά**, that means *branch* or *twig*. It is also the name of a genus of plants that includes
 the *olive tree*.
 
 ## TODOs
