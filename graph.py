@@ -196,10 +196,12 @@ class Graph:
 
 
 if __name__ == '__main__':
-    g = Graph()
-    g.add(0, {'color': 'red'})
-    g.add((0, 0), {'weight': 1})
-    print(f"Graph: {g.to_dict()}")
+    g = Graph()  # create an empty graph
+    g.add(0, {'color': 'red'})  # add a node with a property
+    g.add(1, {'color': 'blue'})  # add another node with a property
+    g.add((0, 1), {'weight': 1.0})  # add a looping link with a property
+
+    print(g.to_dict())
 
     # Test add_node
     g1 = Graph()

@@ -5,43 +5,64 @@ Kladia graphs are simple enough to be adapted to any other libraries and framewo
 
 ## Ok, but how?
 
-Using **ONLY Python dictionaries** we can easily construct **the simplest non-empty linked graph** with one node and one link in three steps:
+Using **ONLY Python dictionaries** we can easily construct a simple **two node directed graph** in 4 steps:
 
-1. Create a graph {'graph': None}
-2. Add a node {'graph': {0: None}}
-3. Add a link of the node to itself {'graph': {0: {0: None}}}
+1. Create a graph ``{'graph': None}``
+2. Add a node ``{'graph': {0: None}}``
+3. Add another node ``{'graph': {0: None, 1: None}}``
+4. Add a link from node 0 to node 1 ``{'graph': {0: {1: None}, 1: None}}``
 
 Then, we can replace the ``None`` values with desired properties or data. For example, we can add a node with a
-property ``{'graph': {0: {'color': 'red'}}}`` or a link with a property ``{'graph': {0: {0: {'weight': 1}}}}``.
+property ``{'graph': {0: {'color': 'red'}}}`` or a link with a property ``{'graph': {0: {1: {'weight': 1.0}}}}``.
 
 *Kladia* helps you to create and manipulate these graphs in a simple way.
 
 ```
-from kladia import graph
+import graph
 
-g = graph()  # create an empty graph
+g = graph.Graph()  # create an empty graph
 g.add(0, {'color': 'red'})  # add a node with a property
-g.add((0, 0), {'weight': 1})  ## add a looping link with a property
-
-print({g.to_dict()})  # {'graph': {0: {'color': 'red', 0: {'weight': 1}}}}
+g.add(1, {'color': 'blue'})  # add another node with a property
+g.add((0, 1), {'weight': 1.0})  # add a looping link with a property
+print(g.to_dict())
 ```
 
-For convenience, the Graph class only manage dictionaries for graphs, nodes and links. Properties has not restrictions whatsoever. 
+Which will print (without the comments):
+
+```
+{
+    'graph': {
+        0: {                    # node 0
+            'color': 'red',     # node 0 property
+            1: {'weight': 1.0}  # link to node 1
+        }, 
+        1: {                    # node 1
+            'color': 'blue'     # node 1 property
+        }
+    }
+}
+```
+
+For convenience, the Graph class only manage dictionaries for graphs, nodes and links. 
+By design **Properties has no restrictions whatsoever**. 
 Feel free to review the notes in [NOTES.rst](https://github.com/jocerfranquiz/kladia/blob/main/NOTES.rst) for more information.
 
 ## Why everything is a dictionary?
 
-Using dictionaries and integer labels, we can traverse the graph faster than using an object-oriented approach. You can work only with the structure of the graph, without worrying about the properties for faster operations. For example, this is A **directed binary tree** of 3 levels:
+Using dictionaries and integer labels, we can traverse the graph faster than using an object-oriented approach. 
+You can work only with the structure of the graph, without worrying about the properties for faster operations. 
+For example, this is a **directed binary tree** of 3 levels:
+
 ```
 {
     'graph': {
-        0: {1: None, 2: None}, # Node 0 is linked to nodes 1 and 2
-        1: {3: None, 4: None}, # Node 1 is linked to nodes 3 and 4
-        2: {5: None, 6: None}, # Node 2 is linked to nodes 5 and 6
-        3: None, # Node 3 is a leaf
-        4: None, # Node 4 is a leaf
-        5: None, # Node 5 is a leaf
-        6: None  # Node 6 is a leaf
+        0: {1: None, 2: None},      # Node 0 is linked to nodes 1 and 2
+        1: {3: None, 4: None},      # Node 1 is linked to nodes 3 and 4
+        2: {5: None, 6: None},      # Node 2 is linked to nodes 5 and 6
+        3: None,                    # Node 3 is a leaf
+        4: None,                    # Node 4 is a leaf
+        5: None,                    # Node 5 is a leaf
+        6: None                     # Node 6 is a leaf
     }
 }
 ```
@@ -79,4 +100,3 @@ the *olive tree*.
 - [ ] implement examples using Jupyter Notebook (https://jupyter.org/)
 - [ ] implement visualization using GraphViz (https://graphviz.readthedocs.io/en/stable/)
 - [ ] implement a web interface using Flask (https://flask.palletsprojects.com/en/1.1.x/)
-- 
