@@ -7,49 +7,52 @@ Kladia graphs are simple enough to be adapted to any other libraries and framewo
 
 Using **ONLY Python dictionaries** we can easily construct **the simplest non-empty linked graph** with one node and one link in three steps:
 
-    1. Create a graph {'graph': None}
-    2. Add a node {'graph': {0: None}}
-    2. Add a link of the node to itself {'graph': {0: {0: None}}}
+1. Create a graph {'graph': None}
+2. Add a node {'graph': {0: None}}
+3. Add a link of the node to itself {'graph': {0: {0: None}}}
 
 Then, we can replace the ``None`` values with desired properties or data. For example, we can add a node with a
 property ``{'graph': {0: {'color': 'red'}}}`` or a link with a property ``{'graph': {0: {0: {'weight': 1}}}}``.
 
 *Kladia* helps you to create and manipulate these graphs in a simple way.
 
-    from kladia import graph
-    
-    g = graph()  # create an empty graph
-    g.add(0, {'color': 'red'})  # add a node with a property
-    g.add((0, 0), {'weight': 1})  ## add a looping link with a property
-    
-    print({g.to_dict()})  # {'graph': {0: {'color': 'red', 0: {'weight': 1}}}}
-    
-For convenience, Graph class only manage dictionaries for graphs, nodes and links. Properties has not restrictions whatsoever. 
+```
+from kladia import graph
+
+g = graph()  # create an empty graph
+g.add(0, {'color': 'red'})  # add a node with a property
+g.add((0, 0), {'weight': 1})  ## add a looping link with a property
+
+print({g.to_dict()})  # {'graph': {0: {'color': 'red', 0: {'weight': 1}}}}
+```
+
+For convenience, the Graph class only manage dictionaries for graphs, nodes and links. Properties has not restrictions whatsoever. 
 Feel free to review the notes in [NOTES.rst](https://github.com/jocerfranquiz/kladia/blob/main/NOTES.rst) for more information.
 
 ## Why everything is a dictionary?
 
 Using dictionaries and integer labels, we can traverse the graph faster than using an object-oriented approach. You can work only with the structure of the graph, without worrying about the properties for faster operations. For example, this is A **directed binary tree** of 3 levels:
 ```
-print(binary_tree_graph.to_dict())
-
 {
-'graph': {
-    0: {1: None, 2: None}, 
-    1: {3: None, 4: None}, 
-    2: {5: None, 6: None}, 
-    3: None, 
-    4: None, 
-    5: None, 
-    6: None
+    'graph': {
+        0: {1: None, 2: None}, # Node 0 is linked to nodes 1 and 2
+        1: {3: None, 4: None}, # Node 1 is linked to nodes 3 and 4
+        2: {5: None, 6: None}, # Node 2 is linked to nodes 5 and 6
+        3: None, # Node 3 is a leaf
+        4: None, # Node 4 is a leaf
+        5: None, # Node 5 is a leaf
+        6: None  # Node 6 is a leaf
     }
 }
 ```
+
 ## Other features:
-    - Kladia graphs are up to order 2 nested Python dictionaries (dicts of dicts of dicts)
-    - Graphs are represented as a dictionary of nodes, where each node is a dictionary of links (edges), commomly knoewd as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
-    - Graphs are directed by default. To create an undirected graph, just add the same link in both directions
-    - Graphs, nodes and links can have a custom **properties** dictionary to store any kind of data, such as weights, labels, etc.
+*Kladia* graphs are:
+- Up to order 2 nested Python dictionaries (dicts of dicts of dicts)
+- Represented as a dictionary of nodes, where each node is a dictionary of links (edges), commonly known as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
+- Directed by default. To create an undirected graph, just add the same link in both directions
+
+Graphs, nodes and links can have custom **properties** dictionary to store any kind of data, such as weights, labels, etc.
 
 ## Why the name Kladia?
 
