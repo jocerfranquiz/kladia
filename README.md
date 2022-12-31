@@ -1,6 +1,6 @@
-# Kladia  🌿
+# Kladia 🌿
 
-## A simple and minimal graph library based on Python dictionaries
+### A simple and minimal graph library based on Python dictionaries
 
 **Kladia** is a library that provides a simple and easy way to work with graph data structures in Python. 
 **Kladia graphs** are dictionaries simple enough to be used and adapted to any other libraries and frameworks.
@@ -20,12 +20,13 @@ property ``{'graph': {0: {'color': 'red'}}}`` or a link with a property ``{'grap
 *Kladia* helps you to create and manipulate these graphs in a simple way.
 
 ```
-import kladia.graph
+from kladia.graph import graph
 
-g = graph.Graph()  # create an empty graph
+g = graph()  # create an empty graph
 g.add(0, {'color': 'red'})  # add a node with a property
 g.add(1, {'color': 'blue'})  # add another node with a property
 g.add((0, 1), {'weight': 1.0})  # add a looping link with a property
+
 print(g.to_dict())
 ```
 
@@ -46,8 +47,11 @@ Which will print (without the comments):
 ```
 
 For convenience, the Graph class only manage dictionaries for graphs, nodes and links. 
-By design **Properties has no restrictions whatsoever**. 
+By design **Properties has no restrictions whatsoever**.
+
 Feel free to review the notes in [NOTES.rst](https://github.com/jocerfranquiz/kladia/blob/main/docs/NOTES.rst) for more information.
+
+More examples can be found in the [examples](https://github.com/jocerfranquiz/kladia/tree/main/examples) folder.
 
 ## Why everything is a dictionary?
 
