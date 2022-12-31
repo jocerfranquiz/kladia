@@ -6,22 +6,38 @@ version: 0.0.1
 """
 
 
-class Graph:
-    """Graph class
-    :param graph: Graph to initialize with. Defaults to None.
+def graph(graph_dict: dict = None):
+    """This function returns a Graph instance
+    :param graph_dict: A dictionary with the graph data
     """
+    if graph_dict is None:
+        return Graph()
+    else:
+        return Graph(graph_dict)
 
-    def __init__(self, graph=None) -> None:
-        """Initialize graph
-        :param graph:  to initialize with. Defaults to None.
+
+class Graph:
+    """Graph class private methods"""
+
+    def __init__(self, graph_dict: dict = None) -> None:
+        """Initialize graph with empty dict
+        of the form {"graph": None}
         """
 
-        self.__label = 'graph'
-        self.__graph = {self.__label: None}
-
-        if graph is not None:
-            if self.__validate_graph(graph):
-                self.__graph |= graph
+        if graph_dict is not None:
+            keys = list(graph_dict.keys())
+            if len(keys) == 1 and keys[0] == 'graph':
+                self.__label = keys[0]
+            else:
+                raise ValueError("Incorrect graph format")
+            if self.__validate_graph(graph_dict):
+                self.__label = 'graph'
+                self.__graph = graph_dict
+            else:
+                raise ValueError("Incorrect graph format")
+        else:
+            self.__label = 'graph'
+            self.__graph = {self.__label: None}
 
     def to_dict(self) -> dict:
         """Get graph
@@ -171,32 +187,50 @@ class Graph:
                         _links.append((key, to_node))
         return _links
 
-    def __validate_graph(self, graph) -> bool:
+    def to_matrix(self) -> list:
+        """Get graph as adjacency matrix. If nodes do not exist, return empty matrix.
+        :return: Adjacency matrix
+        :rtype: list
+        """
+        nodes = self.__graph[self.__label]
+        if nodes is None:
+            return []
+        else:
+            matrix = []
+            for i in range(len(nodes)):
+                matrix.append([0] * len(nodes))  # Initialize matrix with 0s
+            for from_node in nodes:
+                if nodes[from_node] is not None:
+                    for to_node in nodes[from_node]:
+                        matrix[from_node][to_node] = 1  # Set 1 if link exists
+            return matrix
+
+    def __validate_graph(self, graph_dict) -> bool:
         """Validate graph
-        :param graph: Graph to validate
+        :param graph_dict: Graph to validate
         :return: True if valid, False otherwise
         """
 
         # Graph must be of type dict
-        if not isinstance(graph, dict):
+        if not isinstance(graph_dict, dict):
             raise TypeError("Graph must be of type dict")
 
-        # Graph must have GRAPH_LABEL key
-        if self.__label not in graph:
+        # Graph must have 'graph' key
+        if self.__label not in graph_dict:
             raise ValueError(f'Graph key must be "{self.__label}"')
 
         # Graph keys must be of type str
-        if not all(isinstance(key, int) or isinstance(key, str) for key in graph):
+        if not all(isinstance(key, int) or isinstance(key, str) for key in graph_dict):
             raise TypeError("Graph keys must be of type int or str")
 
         # Graph values must be of type dict or None
-        if not all(isinstance(value, dict) or value is None for value in graph.values()):
+        if not all(isinstance(value, dict) or value is None for value in graph_dict.values()):
             raise TypeError("Graph values must be of type dict or None")
         return True
 
 
 if __name__ == '__main__':
-    g = Graph()  # create an empty graph
+    g = graph()  # create an empty graph
     g.add(0, {'color': 'red'})  # add a node with a property
     g.add(1, {'color': 'blue'})  # add another node with a property
     g.add((0, 1), {'weight': 1.0})  # add a looping link with a property
@@ -204,45 +238,54 @@ if __name__ == '__main__':
     print(g.to_dict())
 
     # Test add_node
-    g1 = Graph()
+    g1 = graph()
     g1.add(0, {'name': 'Node 0'})
     g1.add(2)
     print(f'g1: {g1.to_dict()}')
     try:
-        g2 = Graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 3: None, 4: None}})
+        g2 = graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 3: None, 4: None}})
         print(f'g2: {g2.to_dict()}')
     except Exception as e:
         print(f'g2: {e}')
     try:
-        g3 = Graph({'grap': {0: None}})
+        g3 = graph({'grap': {0: None}})
     except Exception as e:
         print(f'g3 error: {e}')
 
     # Test add for links
-    g4 = Graph()
+    g4 = graph()
     g4.add((1, 2), {'label': 'link1'})
     g4.add((2, 3))
     g4.add((4, 4))
     print(f'g4: {g4.to_dict()}')
 
     # Test delete_node
-    g5 = Graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 3: None, 4: None}})
+    g5 = graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 3: None, 4: None}})
     g5.dlt(0)
     print(f'g5: {g5.to_dict()}')
 
     # Test delete link
-    g6 = Graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 3: None, 4: None}})
+    g6 = graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 3: None, 4: None}})
     g6.dlt((0, 3))
     print(f'g6: {g6.to_dict()}')
 
     # Test nodes
-    g7 = Graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 2: None, 3: None}})
+    g7 = graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 2: None, 3: None}})
     print(f'g7 nodes: {g7.nodes()}')
 
     # Test links
-    triangular_graph = Graph({'graph': {
+    triangular_graph = graph({'graph': {
         0: {1: {'label': 'link1'}},
         1: {2: {'label': 'link2'}},
         2: {0: {'label': 'link3'}},
     }})
+
+    # Test to_matrix
+    print(f'Triangular graph: {triangular_graph.to_dict()}')
+    print(f'triangular_graph nodes: {triangular_graph.nodes()}')
     print(f'triangular_graph links: {triangular_graph.links()}')
+    print(f'triangular_graph array: {triangular_graph.to_matrix()}')
+
+    # test empty graph to_matrix
+    g8 = graph()
+    print(f'g8 array: {g8.to_matrix()}')
