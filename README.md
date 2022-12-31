@@ -47,7 +47,7 @@ Which will print (without the comments):
 
 For convenience, the Graph class only manage dictionaries for graphs, nodes and links. 
 By design **Properties has no restrictions whatsoever**. 
-Feel free to review the notes in [NOTES.rst](https://github.com/jocerfranquiz/kladia/blob/main/NOTES.rst) for more information.
+Feel free to review the notes in [NOTES.rst](https://github.com/jocerfranquiz/kladia/blob/main/docs/NOTES.rst) for more information.
 
 ## Why everything is a dictionary?
 
