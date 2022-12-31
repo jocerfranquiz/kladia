@@ -111,7 +111,7 @@ the *olive tree*.
 ## TODOs
 
 - [x] implement ``to_matrix`` method to convert a graph to an adjacency matrix
-- [ ] implement ``from_matrix`` method to convert an adjacency matrix to a kladia graph
+- [x] implement ``from_matrix`` method to convert an adjacency matrix to a kladia graph
 - [ ] implement operations on graphs, e.g. union, intersection, difference, etc.
 - [ ] implement traversal algorithms, e.g. BFS, DFS, etc.
 - [ ] implement search algorithms, e.g. BFS, DFS, etc.
