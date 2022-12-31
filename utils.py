@@ -1,8 +1,11 @@
-import sys
-
 """
 This module contains utility functions for the project.
+author: @jocerfranquiz
+date: 2022-12-31
+version: 0.0.1
 """
+
+import sys
 
 
 def get_size(obj, seen=None):
