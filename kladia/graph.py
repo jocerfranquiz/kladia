@@ -30,7 +30,7 @@ class Graph:
                 self.__label = keys[0]
             else:
                 raise ValueError("Incorrect graph format")
-            if self.__validate_graph(graph_dict):
+            if self.validate_graph(graph_dict):
                 self.__label = 'graph'
                 self.__graph = graph_dict
             else:
@@ -176,15 +176,15 @@ class Graph:
 
     def links(self) -> list:
         """Get all the links in graph
-        :return: List of links
+        :return: List of tuples of links (from_node, to_node) without properties
         """
         _links = []
         nodes = self.__graph[self.__label]
         if nodes is not None:
-            for key in nodes:
-                if nodes[key] is not None:
-                    for to_node in nodes[key]:
-                        _links.append((key, to_node))
+            for from_node in nodes:
+                if nodes[from_node] is not None:
+                    for to_node in nodes[from_node]:
+                        _links.append((from_node, to_node))
         return _links
 
     def to_matrix(self) -> list:
@@ -224,7 +224,7 @@ class Graph:
                 if matrix[i][j] == 1:
                     self.add((i, j))
 
-    def __validate_graph(self, graph_dict) -> bool:
+    def validate_graph(self, graph_dict) -> bool:
         """Validate graph
         :param graph_dict: Graph to validate
         :return: True if valid, False otherwise
@@ -246,3 +246,9 @@ class Graph:
         if not all(isinstance(value, dict) or value is None for value in graph_dict.values()):
             raise TypeError("Graph values must be of type dict or None")
         return True
+
+    def copy(self):
+        """Copy graph
+        :return: New instance with a copy of graph
+        """
+        return Graph(self.__graph[self.__label])
