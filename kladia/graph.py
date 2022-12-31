@@ -205,6 +205,25 @@ class Graph:
                         matrix[from_node][to_node] = 1  # Set 1 if link exists
             return matrix
 
+    def from_matrix(self, matrix: list) -> None:
+        """Set graph from adjacency matrix
+        :param matrix: Adjacency matrix
+        """
+        if not isinstance(matrix, list):
+            raise TypeError("Matrix must be of type list")
+        if not all(isinstance(row, list) for row in matrix):
+            raise TypeError("Matrix must be of type list of lists")
+        if not all(all(isinstance(element, int) or isinstance(element, float) for element in row) for row in matrix):
+            raise TypeError("Matrix must be of type list of lists of ints or floats")
+        if not all(len(row) == len(matrix) for row in matrix):
+            raise ValueError("Matrix must be square")
+
+        self.__graph[self.__label] = None
+        for i in range(len(matrix)):
+            for j in range(len(matrix)):
+                if matrix[i][j] == 1:
+                    self.add((i, j))
+
     def __validate_graph(self, graph_dict) -> bool:
         """Validate graph
         :param graph_dict: Graph to validate
