@@ -1,5 +1,6 @@
 
 from kladia.graph import graph
+from kladia.operators import union
 
 if __name__ == '__main__':
 
@@ -68,3 +69,15 @@ if __name__ == '__main__':
     g7 = graph()
     g7.from_matrix(matrix)
     print(f'g7: {g7.to_dict()}')
+
+    # Union of two graphs
+    g8 = graph({'graph': {0: {1: {'link': 'link1'}}, 1: {2: {'link': 'link2'}}}})
+    g9 = graph({'graph': {1: {2: {'color': 'blue'}}, 2: None}})
+    g10 = union(g8, g9)
+    print(f'g10: {g10.to_dict()}')
+
+    # Intersection of two graphs
+    # g11 = graph({'graph': {0: {1: {'link': 'link1'}}, 1: {2: {'link': 'link2'}}}})
+    # g12 = graph({'graph': {1: {2: {'color': 'blue'}}, 2: None}})
+    # g13 = op.intersection(g11, g12)
+    # print(f'g13: {g13.to_dict()}')
