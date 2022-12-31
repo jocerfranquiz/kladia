@@ -46,14 +46,12 @@ Which will print (without the comments):
 }
 ```
 
-For convenience, the Graph class only manage dictionaries for graphs, nodes and links. 
-By design **Properties has no restrictions whatsoever**.
-
-Feel free to review the notes in [NOTES.rst](https://github.com/jocerfranquiz/kladia/blob/main/docs/NOTES.rst) for more information.
-
 More examples can be found in the [examples](https://github.com/jocerfranquiz/kladia/tree/main/examples) folder.
 
 ## Why everything is a dictionary?
+
+For convenience, the Graph class only manage dictionaries for graphs, nodes and links. 
+By design **Properties has no restrictions whatsoever**.
 
 Using dictionaries and integer labels, we can traverse the graph faster than using an object-oriented approach. 
 You can work only with the structure of the graph, without worrying about the properties for faster operations. 
@@ -72,6 +70,9 @@ For example, this is a **directed binary tree** of 3 levels:
     }
 }
 ```
+
+Feel free to review the notes in [NOTES.rst](https://github.com/jocerfranquiz/kladia/blob/main/docs/NOTES.rst) 
+for more information about the graph structure.
 
 ## Other features:
 *Kladia* graphs are:
