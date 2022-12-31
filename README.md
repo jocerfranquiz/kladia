@@ -84,8 +84,7 @@ the *olive tree*.
 
 ## TODOs
 
-- [ ] implement ``from_dict`` method
-- [ ] implement ``to_matrix`` method to convert a graph to a adjacency matrix
+- [x] implement ``to_matrix`` method to convert a graph to a adjacency matrix
 - [ ] implement operations on graphs, e.g. union, intersection, difference, etc.
 - [ ] implement traversal algorithms, e.g. BFS, DFS, etc.
 - [ ] implement search algorithms, e.g. BFS, DFS, etc.
