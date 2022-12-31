@@ -1,7 +1,9 @@
-# Kladia  🌿 A simple and minimal graph library based on Python dictionaries
+# Kladia  🌿
 
-The main goal of this library is to provide a simple and easy to use graph data structures. 
-Kladia graphs are simple enough to be adapted to any other libraries and frameworks.
+## A simple and minimal graph library based on Python dictionaries
+
+**Kladia** is a library that provides a simple and easy way to work with graph data structures in Python. 
+**Kladia graphs** are dictionaries simple enough to be used and adapted to any other libraries and frameworks.
 
 ## Ok, but how?
 
@@ -18,7 +20,7 @@ property ``{'graph': {0: {'color': 'red'}}}`` or a link with a property ``{'grap
 *Kladia* helps you to create and manipulate these graphs in a simple way.
 
 ```
-import graph
+import kladia.graph
 
 g = graph.Graph()  # create an empty graph
 g.add(0, {'color': 'red'})  # add a node with a property
@@ -69,8 +71,8 @@ For example, this is a **directed binary tree** of 3 levels:
 
 ## Other features:
 *Kladia* graphs are:
-- Up to order 2 nested Python dictionaries (dicts of dicts of dicts)
-- Represented as a dictionary of nodes, where each node is a dictionary of links (edges), commonly known as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
+- Up to order 2 nested Python dictionaries (dicts, of dicts, of dicts)
+- Represented as a dictionary of nodes (vertices), where each node is a dictionary of links (edges), commonly known as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
 - Directed by default. To create an undirected graph, just add the same link in both directions
 
 Graphs, nodes and links can have custom **properties** dictionary to store any kind of data, such as weights, labels, etc.
