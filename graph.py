@@ -13,7 +13,7 @@ class Graph:
 
     def __init__(self, graph=None) -> None:
         """Initialize graph
-        :param graph: Graph to initialize with. Defaults to None.
+        :param graph:  to initialize with. Defaults to None.
         """
 
         self.__label = 'graph'
@@ -30,25 +30,25 @@ class Graph:
         return self.__graph
 
     def add(self, obj: int or (int, int), properties: dict or None = None) -> None:
-        """Add node or edge to graph
-        :param obj: Node key (int) or edge (int, int) to add
-        :param properties: Node or edge's properties. Defaults to None.
+        """Add node or link to graph
+        :param obj: Node key (int) or link (int, int) to add
+        :param properties: Node or link's properties. Defaults to None.
         """
         if isinstance(obj, int):
             self.__add_node(obj, properties)
         elif isinstance(obj, tuple):
-            self.__add_edge(obj, properties)
+            self.__add_link(obj, properties)
         else:
             raise TypeError("Object must be of type int or tuple")
 
     def dlt(self, obj: int or (int, int)) -> None:
-        """Delete node or edge from graph
-        :param obj: Node key (int) or edge (int, int) to delete
+        """Delete node or link from graph
+        :param obj: Node key (int) or link (int, int) to delete
         """
         if isinstance(obj, int):
             self.__dlt_node(obj)
         elif isinstance(obj, tuple):
-            self.__dlt_edge(obj)
+            self.__dlt_link(obj)
         else:
             raise TypeError("Object must be of type int or tuple")
 
@@ -71,19 +71,19 @@ class Graph:
             else:
                 raise ValueError("Node already exists")
 
-    def __add_edge(self, edge: tuple, properties: dict or None = None) -> None:
-        """Add edge to graph. If nodes do not exist, they will be added with properties=None.
-        :param edge: Edge to add
-        :param properties: Edge's properties. Defaults to None.
+    def __add_link(self, link: tuple, properties: dict or None = None) -> None:
+        """Add link to graph. If nodes do not exist, they will be added with properties=None.
+        :param link: Link to add
+        :param properties: Link properties. Defaults to None.
         """
-        if not isinstance(edge, tuple):
-            raise TypeError("Edge must be of type tuple")
-        if not all(isinstance(node, int) for node in edge):
+        if not isinstance(link, tuple):
+            raise TypeError("Link must be of type tuple")
+        if not all(isinstance(node, int) for node in link):
             raise TypeError("Node's keys must be of type int")
         if properties is not None and not isinstance(properties, dict):
             raise TypeError("Properties must be of type dict")
 
-        from_node, to_node = edge
+        from_node, to_node = link
         nodes = self.__graph[self.__label]
         if nodes is None:
             self.__graph[self.__label] = {from_node: {to_node: properties}}
@@ -97,7 +97,7 @@ class Graph:
                     if to_node not in nodes[from_node]:
                         self.__graph[self.__label][from_node] |= {to_node: properties}
                     else:
-                        raise ValueError("Edge already exists")
+                        raise ValueError("This link already exists")
 
             # Add to_node if not already in graph
 
@@ -123,16 +123,16 @@ class Graph:
             else:
                 raise ValueError("Node does not exist")
 
-    def __dlt_edge(self, edge: (int, int)) -> None:
-        """Delete edge from graph
-        :param edge: Edge to delete
+    def __dlt_link(self, link: (int, int)) -> None:
+        """Delete link from graph
+        :param link: Link to delete
         """
-        if not isinstance(edge, tuple):
-            raise TypeError("Edge must be of type tuple")
-        if not all(isinstance(key, int) for key in edge):
+        if not isinstance(link, tuple):
+            raise TypeError("Link must be of type tuple")
+        if not all(isinstance(key, int) for key in link):
             raise TypeError("Node's keys must be of type int")
 
-        from_node, to_node = edge
+        from_node, to_node = link
         nodes = self.__graph[self.__label]
         if nodes is None:
             raise ValueError("Graph is empty, nothing to delete")
@@ -144,9 +144,9 @@ class Graph:
                         if len(self.__graph[self.__label][from_node]) == 0 \
                         else self.__graph[self.__label][from_node]
                 else:
-                    raise ValueError("Edge does not exist")
+                    raise ValueError("Link does not exist")
             else:
-                raise ValueError("Edge does not exist")
+                raise ValueError("Link does not exist")
 
     def nodes(self) -> list:
         """Get all nodes in graph
@@ -158,18 +158,18 @@ class Graph:
         else:
             return list(nodes.keys())
 
-    def edges(self) -> list:
-        """Get all edges in graph
-        :return: List of edges
+    def links(self) -> list:
+        """Get all the links in graph
+        :return: List of links
         """
-        edges = []
+        _links = []
         nodes = self.__graph[self.__label]
         if nodes is not None:
             for key in nodes:
                 if nodes[key] is not None:
                     for to_node in nodes[key]:
-                        edges.append((key, to_node))
-        return edges
+                        _links.append((key, to_node))
+        return _links
 
     def __validate_graph(self, graph) -> bool:
         """Validate graph
@@ -218,9 +218,9 @@ if __name__ == '__main__':
     except Exception as e:
         print(f'g3 error: {e}')
 
-    # Test add_edge
+    # Test add for links
     g4 = Graph()
-    g4.add((1, 2), {'label': 'edge1'})
+    g4.add((1, 2), {'label': 'link1'})
     g4.add((2, 3))
     g4.add((4, 4))
     print(f'g4: {g4.to_dict()}')
@@ -230,7 +230,7 @@ if __name__ == '__main__':
     g5.dlt(0)
     print(f'g5: {g5.to_dict()}')
 
-    # Test delete_edge
+    # Test delete link
     g6 = Graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 3: None, 4: None}})
     g6.dlt((0, 3))
     print(f'g6: {g6.to_dict()}')
@@ -239,12 +239,10 @@ if __name__ == '__main__':
     g7 = Graph({'graph': {0: {3: {'label': 'node3'}}, 1: None, 2: None, 3: None}})
     print(f'g7 nodes: {g7.nodes()}')
 
-    # Test edges
+    # Test links
     triangular_graph = Graph({'graph': {
-        0: {1: {'label': 'edge1'}},
-        1: {2: {'label': 'edge2'}},
-        2: {0: {'label': 'edge3'}},
+        0: {1: {'label': 'link1'}},
+        1: {2: {'label': 'link2'}},
+        2: {0: {'label': 'link3'}},
     }})
-    print(f'triangular_graph edges: {triangular_graph.edges()}')
-
-
+    print(f'triangular_graph links: {triangular_graph.links()}')
