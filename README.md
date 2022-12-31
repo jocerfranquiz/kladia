@@ -45,8 +45,10 @@ Which will print (without the comments):
     }
 }
 ```
-
-More examples can be found in the [examples](https://github.com/jocerfranquiz/kladia/tree/main/examples) folder.
+Just remember, ``color`` and ``weight`` are just examples of properties and are
+NOT implemented in ``kladia.graph``. But, this is a very simple, minimal and flexible library, 
+so you can adapt it to your needs. More examples can be found in the 
+[examples](https://github.com/jocerfranquiz/kladia/tree/main/examples) folder.
 
 ## Why everything is a dictionary?
 
@@ -77,10 +79,29 @@ for more information about the graph structure.
 ## Other features:
 *Kladia* graphs are:
 - Up to order 2 nested Python dictionaries (dicts, of dicts, of dicts)
+- Graphs, nodes and links can have custom **properties** dictionary to store any kind of data, such as weights, labels, etc.
 - Represented as a dictionary of nodes (vertices), where each node is a dictionary of links (edges), commonly known as [adjacency list](https://en.wikipedia.org/wiki/Adjacency_list)
-- Directed by default. To create an undirected graph, just add the same link in both directions
+- **Directed Graphs or DiGraphs** by default. To create **Bidirected graphs**, 
+just add the same link in both directions.
+- **Weighted graphs** can be represented by adding a property to the link, like ``{'weight': 1.0}``
+- **MultiGraphs** can be represented by adding a property to the link, like ``{type: 'B', name: 'user1'}``
+- **Undirected graphs** can be represented by adding the same link in both directions or by adding a property to the link, like ``{'undirected': True}``
 
-Graphs, nodes and links can have custom **properties** dictionary to store any kind of data, such as weights, labels, etc.
+For example, here is an **Undirected Graph** with 3 nodes:
+    
+```
+{
+    'graph': {
+        0: {1: {'undirected': True}}, # Node 0 is undirectedly linked to node 1
+        1: {2: {'undirected': True}}, # Node 1 is undirectedly linked to node 2
+        2: {0: {'undirected': False}}, # Node 2 is directedly linked to node 0
+        'graph_type': 'undirected'     # This flag helps to traverse the graph looking for the "undirected" property on each link
+    }
+}
+```
+
+Please, take this example as a **suggestion**. ``graph_type`` and ``undirected`` are not implemented as special 
+keys in ``kladia.graph``. But, this is a very simple, minimal and flexible library, so you can adapt it to your needs.
 
 ## Why the name Kladia?
 
@@ -89,7 +110,8 @@ the *olive tree*.
 
 ## TODOs
 
-- [x] implement ``to_matrix`` method to convert a graph to a adjacency matrix
+- [x] implement ``to_matrix`` method to convert a graph to an adjacency matrix
+- [ ] implement ``from_matrix`` method to convert an adjacency matrix to a kladia graph
 - [ ] implement operations on graphs, e.g. union, intersection, difference, etc.
 - [ ] implement traversal algorithms, e.g. BFS, DFS, etc.
 - [ ] implement search algorithms, e.g. BFS, DFS, etc.
