@@ -164,15 +164,29 @@ class Graph:
             else:
                 raise ValueError("Link does not exist")
 
-    def nodes(self) -> list:
+    def nodes(self) -> dict or None:
         """Get all nodes in graph
-        :return: List of nodes
+        :return: dict of nodes
         """
-        nodes = self.__graph[self.__label]
-        if nodes is None:
-            return []
+
+        if self.__graph[self.__label] is None:
+            return None
         else:
-            return list(nodes.keys())
+            # copy nodes from graph
+            _nodes = self.__graph[self.__label].copy()
+            # iterate over keys
+            for key in _nodes:
+                # if node has links or properties
+                if _nodes[key] is not None:
+                    # iterate over nodes[key] items
+                    property_keys = [_ for _ in _nodes[key].keys()]
+                    for k in property_keys:
+                        # is k an integer?
+                        if isinstance(k, int):
+                            # remove item
+                            del _nodes[key][k]
+            # leave the rest there
+            return _nodes
 
     def links(self) -> list:
         """Get all the links in graph
@@ -252,3 +266,14 @@ class Graph:
         :return: New instance with a copy of graph
         """
         return Graph(self.__graph[self.__label])
+
+    # def union(self, graph):
+    #     """Union of two graphs
+    #     :param graph: Graph to union with
+    #     :return: New instance with union of graphs
+    #     """
+    #     if not isinstance(graph, Graph):
+    #         raise TypeError("Graph must be of type Graph")
+    #
+    #     # Iterate over graph nodes
+    #
