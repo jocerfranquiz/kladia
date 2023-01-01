@@ -55,7 +55,7 @@ class Graph:
         elif isinstance(obj, tuple):
             self.__add_link(obj, properties)
         else:
-            raise TypeError("Object must be of type int or tuple")
+            raise TypeError(f"Object {obj} must be of type int or tuple")
 
     def dlt(self, obj: int or (int, int)) -> None:
         """Delete node or link from graph
@@ -74,9 +74,9 @@ class Graph:
         :param properties: Node's properties. Defaults to None.
         """
         if not isinstance(node_key, int):
-            raise TypeError("Node's key must be of type int")
-        if properties is not None and not isinstance(properties, dict):
-            raise TypeError("Properties must be of type dict")
+            raise TypeError(f"Node key {node_key} must be of type int")
+        if not (isinstance(properties, dict) or properties is None):
+            raise TypeError(f"Properties {properties} must be of type dict or None")
 
         nodes = self.__graph[self.__label]
         if nodes is None:
@@ -85,7 +85,7 @@ class Graph:
             if node_key not in nodes:
                 self.__graph[self.__label] |= {node_key: properties}
             else:
-                raise ValueError("Node already exists")
+                raise ValueError(f"The node {node_key}:{properties} already exists")
 
     def __add_link(self, link: tuple, properties: dict or None = None) -> None:
         """Add link to graph. If nodes do not exist, they will be added with properties=None.
@@ -93,11 +93,11 @@ class Graph:
         :param properties: Link properties. Defaults to None.
         """
         if not isinstance(link, tuple):
-            raise TypeError("Link must be of type tuple")
+            raise TypeError(f"Link {link} must be of type tuple")
         if not all(isinstance(node, int) for node in link):
-            raise TypeError("Node's keys must be of type int")
-        if properties is not None and not isinstance(properties, dict):
-            raise TypeError("Properties must be of type dict")
+            raise TypeError(f"Node's keys on link {link} must be of type int")
+        if not (isinstance(properties, dict) or properties is None):
+            raise TypeError(f"Properties {properties} must be of type dict or None")
 
         from_node, to_node = link
         nodes = self.__graph[self.__label]
@@ -113,7 +113,7 @@ class Graph:
                     if to_node not in nodes[from_node]:
                         self.__graph[self.__label][from_node] |= {to_node: properties}
                     else:
-                        raise ValueError("This link already exists")
+                        raise ValueError(f"The link {link} already exists")
 
             # Add to_node if not already in graph
 
@@ -125,7 +125,7 @@ class Graph:
         :param node_key: Node's key to delete
         """
         if not isinstance(node_key, int):
-            raise TypeError("Node's key must be of type int")
+            raise TypeError(f"Node's key {node_key} must be of type int")
 
         nodes = self.__graph[self.__label]
         if nodes is None:
@@ -137,7 +137,7 @@ class Graph:
                     if key != self.__label and nodes[key] is not None and node_key in nodes[key]:
                         del self.__graph[self.__label][key][node_key]
             else:
-                raise ValueError("Node does not exist")
+                raise ValueError(f"Node key {node_key} does not exist")
 
     def __dlt_link(self, link: (int, int)) -> None:
         """Delete link from graph
@@ -160,9 +160,9 @@ class Graph:
                         if len(self.__graph[self.__label][from_node]) == 0 \
                         else self.__graph[self.__label][from_node]
                 else:
-                    raise ValueError("Link does not exist")
+                    raise ValueError(f"Link {link} does not exist")
             else:
-                raise ValueError("Link does not exist")
+                raise ValueError(f"Link {link} does not exist")
 
     def nodes(self) -> dict or None:
         """Get all nodes in graph
@@ -204,8 +204,28 @@ class Graph:
                         # if the property is a link
                         if isinstance(prop_k, int):
                             _links |= {(node_k, prop_k): prop_v}
-                            # _links[node_k] = {prop_k: prop_v}
             return _links
+
+    @staticmethod
+    def from_nodes_and_links(nodes: dict = None, links: dict = None) -> object:
+        """Add nodes and links to graph
+        :param nodes: dict of nodes
+        :param links: dict of links
+        """
+        if not isinstance(nodes, dict):
+            raise TypeError("Nodes must be of type dict")
+        if not isinstance(links, dict):
+            raise TypeError("Links must be of type dict")
+
+        # Create a new graph
+        _graph = Graph()
+        if nodes is not None:
+            for node_k, node_p in nodes.items():
+                _graph.add(node_k, node_p)
+        if links is not None:
+            for link_k, link_p in links.items():
+                _graph.add(link_k, link_p)
+        return _graph
 
     def to_matrix(self) -> list[list[float]]:
         """Get graph as adjacency matrix. If nodes do not exist, return empty matrix.
@@ -278,7 +298,8 @@ class Graph:
         """Copy graph
         :return: New instance with a copy of graph
         """
-        return Graph(self.__graph[self.__label])
+        g = self.__graph[self.__label].to_dict()
+        return Graph(g)
 
     def union(self, g: object) -> object:
         """Union of two graphs
@@ -330,5 +351,97 @@ class Graph:
                                     else:
                                         # if property exists in b, overwrite it
                                         b_nodes[node_k][prop_k][link_prop_k] = link_prop_v
-            self.__graph[self.__label] = b_nodes
+            # self.__graph[self.__label] = b_nodes
             return self
+
+    def intersect(self, g: object) -> object:
+        """Intersection of two graphs
+        :param g: Graph to intersect with
+        :return: Same graph instance with intersection of two graphs
+        """
+        if not isinstance(g, Graph):
+            raise TypeError("Graph must be of type Graph")
+
+        g_nodes = g.nodes()
+        g_links = g.links()
+        b_nodes = self.nodes()
+        b_links = self.links()
+        b_nodes_copy = b_nodes.copy()
+        b_links_copy = b_links.copy()
+
+        # Intersect nodes
+        if b_nodes is not None:
+            if g_nodes is not None:
+                node_keys = b_nodes.keys() & g_nodes.keys()
+                if len(node_keys) != 0:
+                    for b_node_key, b_node_prop in b_nodes.items():
+                        if b_node_key in node_keys:
+                            if g_nodes[b_node_key] is not None:
+                                if b_node_prop is not None:
+                                    # Intersect node properties
+                                    node_prop_keys = b_node_prop.keys() & g_nodes[b_node_key].keys()
+                                    if len(node_prop_keys) != 0:
+                                        for node_prop_key, node_prop_val in b_node_prop.items():
+                                            if node_prop_key in node_prop_keys:
+                                                # Intersect node property values
+                                                if node_prop_val != g_nodes[b_node_key][node_prop_key]:
+                                                    del b_nodes_copy[b_node_key][node_prop_key]
+                                                else:
+                                                    pass
+                                            else:
+                                                del b_nodes_copy[b_node_key][node_prop_key]
+                                    else:
+                                        del b_nodes_copy[b_node_key]
+                                else:
+                                    pass
+                            else:
+                                pass
+                        else:
+                            del b_nodes_copy[b_node_key]
+                else:
+                    b_nodes_copy = None
+            else:
+                b_nodes_copy = None
+        else:
+            pass
+
+        # Intersect links
+        if b_links is not None:
+            if g_links is not None:
+                link_keys = b_links.keys() & g_links.keys()
+                if len(link_keys) != 0:
+                    for b_link_key, b_link_prop in b_links.items():
+                        if b_link_key in link_keys:
+                            if g_links[b_link_key] is not None:
+                                if b_link_prop is not None:
+                                    # Intersect link properties
+                                    link_prop_keys = b_link_prop.keys() & g_links[b_link_key].keys()
+                                    if len(link_prop_keys) != 0:
+                                        for link_prop_key, link_prop_val in b_link_prop.items():
+                                            if link_prop_key in link_prop_keys:
+                                                # Intersect link property values
+                                                if link_prop_val != g_links[b_link_key][link_prop_key]:
+                                                    del b_links_copy[b_link_key][link_prop_key]
+                                                else:
+                                                    pass
+                                            else:
+                                                del b_links_copy[b_link_key][link_prop_key]
+                                    else:
+                                        del b_links_copy[b_link_key]
+                                else:
+                                    pass
+                            else:
+                                pass
+                        else:
+                            del b_links_copy[b_link_key]
+                else:
+                    b_links_copy = None
+            else:
+                b_links_copy = None
+        else:
+            pass
+
+        # Update graph
+        new_g = Graph().from_nodes_and_links(b_nodes_copy, b_links_copy)
+        self.__graph[self.__label] = new_g.to_dict()['graph']
+        return self

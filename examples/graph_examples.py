@@ -78,10 +78,11 @@ if __name__ == '__main__':
     print(f'g9: {g9.to_dict()}')
     g10 = g8.union(g9)
     print(f'g10: {g10.to_dict()}')
-    # print(f'g10: {g10.to_dict()}')
 
     # Intersection of two graphs
-    # g11 = graph({'graph': {0: {1: {'link': 'link1'}}, 1: {2: {'link': 'link2'}}}})
-    # g12 = graph({'graph': {1: {2: {'color': 'blue'}}, 2: None}})
-    # g13 = op.intersection(g11, g12)
-    # print(f'g13: {g13.to_dict()}')
+    g11 = graph({'graph': {0: {1: {'label': '_1'}}, 1: {2: None}, 2: None}})
+    print(f'g11: {g11.to_dict()}')
+    g12 = graph({'graph': {0: {1: None}, 1: {'color': 'red'}}})
+    print(f'g12: {g12.to_dict()}')
+    g13 = g11.intersect(g12)
+    print(f'g11.intersect(g12): {g13.to_dict()}')
