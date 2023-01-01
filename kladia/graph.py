@@ -280,13 +280,55 @@ class Graph:
         """
         return Graph(self.__graph[self.__label])
 
-    # def union(self, graph):
-    #     """Union of two graphs
-    #     :param graph: Graph to union with
-    #     :return: New instance with union of graphs
-    #     """
-    #     if not isinstance(graph, Graph):
-    #         raise TypeError("Graph must be of type Graph")
-    #
-    #     # Iterate over graph nodes
-    #
+    def union(self, g: object) -> object:
+        """Union of two graphs
+        :param g: Graph to union with
+        :return: Same graph instance with union of two graphs
+        """
+        if not isinstance(g, Graph):
+            raise TypeError("Graph must be of type Graph")
+
+        g_nodes = g.to_dict()['graph']
+        b_nodes = self.__graph[self.__label]
+
+        if b_nodes is None and g_nodes is None:
+            return self
+        elif b_nodes is not None and g_nodes is None:
+            return self
+        elif b_nodes is None and g_nodes is not None:
+            self.__graph[self.__label] = g_nodes
+            return self
+        else:
+            # iterate over all nodes in g
+            for node_k, node_p in g_nodes.items():
+                # if node does not exist in b
+                if node_k not in b_nodes:
+                    # add node to b
+                    b_nodes |= {node_k: node_p}
+                else:
+                    # if node has properties
+                    if node_p is not None:
+                        # iterate over all properties of node in g
+                        for prop_k, prop_v in node_p.items():
+                            # if property is not a link
+                            if not isinstance(prop_k, int):
+                                # if property does not exist in b
+                                if prop_k not in b_nodes[node_k]:
+                                    # add property to b
+                                    b_nodes[node_k] |= {prop_k: prop_v}
+                                else:
+                                    # if property exists in b, overwrite it
+                                    b_nodes[node_k][prop_k] = prop_v
+                            # if property is a link
+                            else:
+                                # iterate over all properties of link in g
+                                for link_prop_k, link_prop_v in prop_v.items():
+                                    # if property does not exist in b
+                                    if link_prop_k not in b_nodes[node_k][prop_k]:
+                                        # add property to b
+                                        b_nodes[node_k][prop_k] |= {link_prop_k: link_prop_v}
+                                    else:
+                                        # if property exists in b, overwrite it
+                                        b_nodes[node_k][prop_k][link_prop_k] = link_prop_v
+            self.__graph[self.__label] = b_nodes
+            return self
