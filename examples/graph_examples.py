@@ -50,12 +50,13 @@ if __name__ == '__main__':
 
     # Create a triangular graph
     triangular_graph = graph({'graph': {
-        0: {1: {'label': 'link1'}},
-        1: {2: {'label': 'link2'}},
+        0: {1: {'label': 'link1'}, 'color': 'red'},
+        1: {2: None, 'color': 'green'},
         2: {0: {'label': 'link3'}},
     }})
 
     # Get the nodes, links and adjacency matrix
+    print(triangular_graph.to_dict())
     print(f'triangular_graph nodes: {triangular_graph.nodes()}')
     print(f'triangular_graph links: {triangular_graph.links()}')
     print(f'triangular_graph array: {triangular_graph.to_matrix()}')
@@ -63,8 +64,8 @@ if __name__ == '__main__':
     # Create a graph from an adjacency matrix
     matrix = [[0, 1, 0, 0, 0],  # link from node 0 to node 1
               [0, 0, 1, 0, 0],  # link from node 1 to node 2
-              [1, 0, 0, 1, 0],  # links from node 2 to node 0 and node 3
-              [0, 0, 0, 0, 1],  # link from node 3 to node 4
+              [1, 0, 0, 2.3, 0],  # links from node 2 to node 0 and node 3
+              [0, 0, 0, 0, -1],  # link from node 3 to node 4
               [0, 0, 0, 0, 0]]  # node 4 has no links
     g7 = graph()
     g7.from_matrix(matrix)

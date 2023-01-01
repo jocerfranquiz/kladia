@@ -172,36 +172,42 @@ class Graph:
         if self.__graph[self.__label] is None:
             return None
         else:
-            # copy nodes from graph
-            _nodes = self.__graph[self.__label].copy()
-            # iterate over keys
-            for key in _nodes:
-                # if node has links or properties
-                if _nodes[key] is not None:
-                    # iterate over nodes[key] items
-                    property_keys = [_ for _ in _nodes[key].keys()]
-                    for k in property_keys:
-                        # is k an integer?
-                        if isinstance(k, int):
-                            # remove item
-                            del _nodes[key][k]
-            # leave the rest there
+            _nodes = {}
+            # iterate over all nodes
+            for node_k, node_p in self.__graph[self.__label].items():
+                # if node has properties
+                if node_p is not None:
+                    for prop_k, prop_v in node_p.items():
+                        # if the property is not a link
+                        if not isinstance(prop_k, int):
+                            _nodes |= {node_k: {prop_k: prop_v}}
+                        else:
+                            _nodes |= {node_k: None}
+                else:
+                    # if node has no properties, just copy the node
+                    _nodes |= {node_k: None}
             return _nodes
 
-    def links(self) -> list:
+    def links(self) -> dict[[int, int], dict]:
         """Get all the links in graph
-        :return: List of tuples of links (from_node, to_node) without properties
+        :return: dict of links with keys (from_node, to_node) and properties as values
         """
-        _links = []
-        nodes = self.__graph[self.__label]
-        if nodes is not None:
-            for from_node in nodes:
-                if nodes[from_node] is not None:
-                    for to_node in nodes[from_node]:
-                        _links.append((from_node, to_node))
-        return _links
+        if self.__graph[self.__label] is None:
+            return {}
+        else:
+            _links = {}
+            # iterate over all nodes
+            for node_k, node_p in self.__graph[self.__label].items():
+                # if node has properties
+                if node_p is not None:
+                    for prop_k, prop_v in node_p.items():
+                        # if the property is a link
+                        if isinstance(prop_k, int):
+                            _links |= {(node_k, prop_k): prop_v}
+                            # _links[node_k] = {prop_k: prop_v}
+            return _links
 
-    def to_matrix(self) -> list:
+    def to_matrix(self) -> list[list[float]]:
         """Get graph as adjacency matrix. If nodes do not exist, return empty matrix.
         :return: Adjacency matrix
         :rtype: list
@@ -211,13 +217,20 @@ class Graph:
             return []
         else:
             matrix = []
+            # fill matrix with 0s
             for i in range(len(nodes)):
-                matrix.append([0] * len(nodes))  # Initialize matrix with 0s
-            for from_node in nodes:
-                if nodes[from_node] is not None:
-                    for to_node in nodes[from_node]:
-                        matrix[from_node][to_node] = 1  # Set 1 if link exists
-            return matrix
+                matrix.append([0.0] * len(nodes))
+            # get links
+            links = self.links()
+            # iterate over all links
+            for link, prop in links.items():
+                # get link's nodes
+                from_node, to_node = link
+                # get link's weight if it exists
+                weight = float(prop['weight']) if prop is not None and 'weight' in prop else 1.0
+                # add weight to matrix
+                matrix[from_node][to_node] = weight
+        return matrix
 
     def from_matrix(self, matrix: list) -> None:
         """Set graph from adjacency matrix
@@ -235,8 +248,8 @@ class Graph:
         self.__graph[self.__label] = None
         for i in range(len(matrix)):
             for j in range(len(matrix)):
-                if matrix[i][j] == 1:
-                    self.add((i, j))
+                if matrix[i][j] != 0.0:
+                    self.add((i, j), {'weight': matrix[i][j]})
 
     def validate_graph(self, graph_dict) -> bool:
         """Validate graph
