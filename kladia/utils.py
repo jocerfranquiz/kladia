@@ -6,6 +6,44 @@ version: 0.0.1
 """
 
 import sys
+import functools
+
+
+def memoize(func):
+    """Decorator that caches a function's return value each time it is called.
+    If called later with the same arguments, the cached value is returned (not
+    reevaluated).
+
+    Source: https://wiki.python.org/moin/PythonDecoratorLibrary#Memoize
+    """
+    cache = func.cache = {}
+
+    @functools.wraps(func)
+    def memoizer(*args, **kwargs):
+        key = str(args) + str(kwargs)
+        if key not in cache:
+            cache[key] = func(*args, **kwargs)
+        return cache[key]
+    return memoizer
+
+
+@memoize
+def dict_order(d):
+    if not isinstance(d, dict):
+        raise TypeError('dict_order function only accepts dictionaries')
+    if not d:  # empty dictionary
+        return -1
+    max_order = -1
+    for value in d.values():
+        if isinstance(value, dict):
+            order = dict_order(value)
+            if order > max_order:
+                max_order = order
+            else:
+                continue
+        elif value is None:
+            continue
+    return max_order + 1
 
 
 def get_size(obj, seen=None):
@@ -50,6 +88,7 @@ visit each node and link once, regardless of how many attributes they have.
 
 if __name__ == "__main__":
 
+    # Test get_size function
     print(get_size({}))  # 64 bytes
     print(get_size({0: {}}))  # 320 bytes
     print(get_size({0: {0: {}}}))  # 552 bytes
@@ -61,11 +100,13 @@ if __name__ == "__main__":
 
     _none = {0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None, 3: None}, 3: {2: None}}}
     print(get_size(_none))
-
     _empty = {0: {0: {1: {}, 2: {}}, 1: {0: {}, 2: {}}, 2: {0: {}, 1: {}, 3: {}}, 3: {2: {}}}}
     print(get_size(_empty))
 
-    print(100 - get_size(_none) / get_size(_empty) * 100)
+    # Test dict_order function
+    print(dict_order({}))  # -1
+    print(dict_order({0: None}))  # 0
+    print(dict_order({0: {0: None}}))  # 1
+    print(dict_order({0: {0: {0: None}}}))  # 2
 
-    _str = '{0: {0: {1: {}, 2: {}}, 1: {0: {}, 2: {}}, 2: {0: {}, 1: {}, 3: {}}, 3: {2: {}}}}'
-    print(get_size(_str))  # 130 bytes
+    print(dict_order(_none))  # 2
