@@ -102,7 +102,7 @@ class Graph:
         from_node, to_node = link
         nodes = self.__graph[self.__label]
         if nodes is None:
-            self.__graph[self.__label] = {from_node: {to_node: properties}}
+            self.__graph[self.__label] = {from_node: {to_node: properties}, to_node: None}
         else:
             if from_node not in nodes:
                 self.__graph[self.__label] |= {from_node: {to_node: properties}}
