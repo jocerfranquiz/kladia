@@ -376,26 +376,33 @@ class Graph:
                 if len(node_keys) != 0:
                     for b_node_key, b_node_prop in b_nodes.items():
                         if b_node_key in node_keys:
-                            if g_nodes[b_node_key] is not None:
+                            # Union of node properties
+                            b_node_prop_keys = b_node_prop.keys() if b_node_prop is not None else set()
+                            g_node_prop_keys = g_nodes[b_node_key].keys() if g_nodes[b_node_key] is not None else set()
+                            node_prop_keys = b_node_prop_keys | g_node_prop_keys
+                            if len(node_prop_keys) != 0:
                                 if b_node_prop is not None:
-                                    # Intersect node properties
-                                    node_prop_keys = b_node_prop.keys() & g_nodes[b_node_key].keys()
-                                    if len(node_prop_keys) != 0:
-                                        for node_prop_key, node_prop_val in b_node_prop.items():
-                                            if node_prop_key in node_prop_keys:
-                                                # Intersect node property values
-                                                if node_prop_val != g_nodes[b_node_key][node_prop_key]:
-                                                    del b_nodes_copy[b_node_key][node_prop_key]
+                                    for node_prop_key, node_prop_val in b_node_prop.items():
+                                        if node_prop_key in node_prop_keys:
+                                            # Union of node property values
+                                            if g_nodes[b_node_key] is not None:
+                                                if node_prop_val is not None:
+                                                    if node_prop_val != g_nodes[b_node_key][node_prop_key]:
+                                                        del b_nodes_copy[b_node_key][node_prop_key]
+                                                        # b_nodes_copy[b_node_key][node_prop_key] = 'undefined'
+                                                    else:
+                                                        pass
                                                 else:
-                                                    pass
+                                                    b_nodes_copy[b_node_key][node_prop_key] = g_nodes[b_node_key][node_prop_key]
                                             else:
                                                 del b_nodes_copy[b_node_key][node_prop_key]
-                                    else:
-                                        del b_nodes_copy[b_node_key]
+                                                # b_nodes_copy[b_node_key][node_prop_key] = 'undefined'
+                                        else:
+                                            del b_nodes_copy[b_node_key][node_prop_key]
                                 else:
-                                    pass
+                                    b_nodes_copy[b_node_key] = g_nodes[b_node_key]
                             else:
-                                pass
+                                del b_nodes_copy[b_node_key]
                         else:
                             del b_nodes_copy[b_node_key]
                 else:
@@ -412,26 +419,27 @@ class Graph:
                 if len(link_keys) != 0:
                     for b_link_key, b_link_prop in b_links.items():
                         if b_link_key in link_keys:
-                            if g_links[b_link_key] is not None:
+                            # Union of link properties
+                            b_link_prop_keys = b_link_prop.keys() if b_link_prop is not None else set()
+                            g_link_prop_keys = g_links[b_link_key].keys() if g_links[b_link_key] is not None else set()
+                            link_prop_keys = b_link_prop_keys | g_link_prop_keys
+                            if len(link_prop_keys) != 0:
                                 if b_link_prop is not None:
-                                    # Intersect link properties
-                                    link_prop_keys = b_link_prop.keys() & g_links[b_link_key].keys()
-                                    if len(link_prop_keys) != 0:
-                                        for link_prop_key, link_prop_val in b_link_prop.items():
-                                            if link_prop_key in link_prop_keys:
-                                                # Intersect link property values
-                                                if link_prop_val != g_links[b_link_key][link_prop_key]:
-                                                    del b_links_copy[b_link_key][link_prop_key]
+                                    for b_link_prop_key, b_link_prop_val in b_link_prop.items():
+                                        if b_link_prop_key in link_prop_keys:
+                                            # Union of link property values
+                                            if g_links[b_link_key] is not None and b_link_prop_val is not None:
+                                                if b_link_prop_val != g_links[b_link_key][b_link_prop_key]:
+                                                    del b_links_copy[b_link_key][b_link_prop_key]
+                                                    # b_links_copy[b_link_key][b_link_prop_key] = 'undefined'
                                                 else:
                                                     pass
-                                            else:
-                                                del b_links_copy[b_link_key][link_prop_key]
-                                    else:
-                                        del b_links_copy[b_link_key]
+                                        else:
+                                            del b_links_copy[b_link_key][b_link_prop_key]
                                 else:
-                                    pass
+                                    b_links_copy[b_link_key] = g_links[b_link_key]
                             else:
-                                pass
+                                del b_links_copy[b_link_key]
                         else:
                             del b_links_copy[b_link_key]
                 else:
