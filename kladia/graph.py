@@ -16,6 +16,27 @@ def graph(graph_dict: dict = None):
         return Graph(graph_dict)
 
 
+def from_nodes_and_links(nodes: dict = None, links: dict = None) -> object:
+    """Add nodes and links to graph
+    :param nodes: dict of nodes
+    :param links: dict of links
+    """
+    if not isinstance(nodes, dict):
+        raise TypeError("Nodes must be of type dict")
+    if not isinstance(links, dict):
+        raise TypeError("Links must be of type dict")
+
+    # Create a new graph
+    _graph = Graph()
+    if nodes is not None:
+        for node_k, node_p in nodes.items():
+            _graph.add(node_k, node_p)
+    if links is not None:
+        for link_k, link_p in links.items():
+            _graph.add(link_k, link_p)
+    return _graph
+
+
 class Graph:
     """Graph class private methods"""
 
@@ -206,26 +227,7 @@ class Graph:
                             _links |= {(node_k, prop_k): prop_v}
             return _links
 
-    @staticmethod
-    def from_nodes_and_links(nodes: dict = None, links: dict = None) -> object:
-        """Add nodes and links to graph
-        :param nodes: dict of nodes
-        :param links: dict of links
-        """
-        if not isinstance(nodes, dict):
-            raise TypeError("Nodes must be of type dict")
-        if not isinstance(links, dict):
-            raise TypeError("Links must be of type dict")
 
-        # Create a new graph
-        _graph = Graph()
-        if nodes is not None:
-            for node_k, node_p in nodes.items():
-                _graph.add(node_k, node_p)
-        if links is not None:
-            for link_k, link_p in links.items():
-                _graph.add(link_k, link_p)
-        return _graph
 
     def to_matrix(self) -> list[list[float]]:
         """Get graph as adjacency matrix. If nodes do not exist, return empty matrix.
@@ -450,6 +452,5 @@ class Graph:
             pass
 
         # Update graph
-        new_g = Graph().from_nodes_and_links(b_nodes_copy, b_links_copy)
-        self.__graph[self.__label] = new_g.to_dict()['graph']
+        self.__graph[self.__label] = from_nodes_and_links(b_nodes_copy, b_links_copy).to_dict()['graph']
         return self
