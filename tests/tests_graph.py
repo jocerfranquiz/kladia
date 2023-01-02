@@ -58,8 +58,6 @@ def test_graph():
     assert g.to_dict() == {'graph': {0: {1: {'weight': 1.0}}, 1: {'color': 'blue'}}}
 
 
-
-
 # Run the tests script
 if __name__ == '__main__':
     pytest.main()
