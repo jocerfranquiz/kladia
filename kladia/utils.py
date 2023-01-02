@@ -24,23 +24,24 @@ def memoize(func):
         if key not in cache:
             cache[key] = func(*args, **kwargs)
         return cache[key]
+
     return memoizer
 
 
 @memoize
 def dict_nested_order(d):
     """Calculates how many nested levels a dictionary has.
-dict_nested_order({}) -> -1
-dict_nested_order({'a': 1}) -> 0
-dict_nested_order({'a': {'b': {'c': 1}}}) -> 2
-dict_nested_order({'a': {'b': {'c': 1}}, 'd': 2}) -> 2
+dict_nested_order({}) -> 0
+dict_nested_order({'a': 1}) -> 1
+dict_nested_order({'a': {'b': {'c': 1}}}) -> 3
+dict_nested_order({'a': {'b': {'c': 1}}, 'd': 2}) -> 3
     :param d: dictionary
     :return: number of nested levels
     """
     if not isinstance(d, dict):
         raise TypeError('dict_nested_order function only accepts dictionaries')
-    # if not d:  # empty dictionary
-    #     return -1
+    if not d:  # empty dictionary
+        return 0
     max_order = 0
     for value in d.values():
         if isinstance(value, dict):
@@ -67,13 +68,9 @@ In general, the time and space complexity of the get_size function is determined
 rather than the number of attributes associated with the nodes or links. This is because the function only needs to
 visit each node and link once, regardless of how many attributes they have.
 
-    Args:
-        obj (object): Object to get size of
-        seen (set, optional): Set of objects already seen. Defaults to None.
-
-    Returns:
-        int: Size of object in bytes
-
+    :param obj: object to get size of
+    :param seen: list of seen objects (optional). Defaults to None.
+    :return: size of object
     """
     size = sys.getsizeof(obj)
     if seen is None:
@@ -92,33 +89,3 @@ visit each node and link once, regardless of how many attributes they have.
     elif hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes, bytearray)):
         size += sum([get_size(i, seen) for i in obj])
     return size
-
-
-if __name__ == "__main__":
-
-    # Test get_size function
-    print(get_size({}))  # 64 bytes
-    print(get_size({0: {}}))  # 320 bytes
-    print(get_size({0: {0: {}}}))  # 552 bytes
-    print(get_size({0: {0: {0: {}}}}))  # 784 bytes
-    print(get_size(None))  # 16 bytes
-    print(get_size({0: None}))  # 272 bytes
-    print(get_size({0: {0: None}}))  # 504 bytes
-    print(get_size({0: {0: {0: None}}}))  # 736 bytes
-
-    _none = {0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None, 3: None}, 3: {2: None}}}
-    print(get_size(_none))
-    _empty = {0: {0: {1: {}, 2: {}}, 1: {0: {}, 2: {}}, 2: {0: {}, 1: {}, 3: {}}, 3: {2: {}}}}
-    print(get_size(_empty))
-
-    # Test dict_nested_order function
-    d0 = {}
-    print(f' {{d0}} has order {dict_nested_order(d0)}')  # 0
-    d1 = {0: 1}
-    print(f' {d1} has order {dict_nested_order(d1)}')  # 1
-    d2 = {0: {0: None}}
-    print(f' {d2} has order {dict_nested_order(d2)}')  # 2
-    d3 = {0: {0: {0: None}}}
-    print(f' {{d3}} has order {dict_nested_order(d3)}')  # 3
-    d4 = {0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None, 3: None}, 3: {2: None}}}
-    print(f' {d4} has order {dict_nested_order(d4)}')  # 3
