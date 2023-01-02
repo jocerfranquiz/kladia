@@ -20,6 +20,7 @@ def from_nodes_and_links(nodes: dict = None, links: dict = None) -> object:
     """Add nodes and links to graph
     :param nodes: dict of nodes
     :param links: dict of links
+    :return: Graph instance
     """
     if not isinstance(nodes, dict):
         raise TypeError("Nodes must be of type dict")
@@ -62,7 +63,7 @@ class Graph:
 
     def to_dict(self) -> dict:
         """Get graph
-        :return: Graph
+        :return:  dictionary
         """
         return self.__graph
 
@@ -187,7 +188,7 @@ class Graph:
 
     def nodes(self) -> dict or None:
         """Get all nodes in graph
-        :return: dict of nodes
+        :return: dict of nodes or None if graph is empty
         """
 
         if self.__graph[self.__label] is None:
