@@ -110,20 +110,20 @@ the *olive tree*.
 
 ## TODOs
 
-- [x] implement ``to_matrix`` method to convert a graph to an adjacency matrix
-- [x] implement ``from_matrix`` method to convert an adjacency matrix to a kladia graph
-- [x] implement operations on graphs: union, intersection
-- [ ] implement search algorithms, e.g. BFS, DFS, etc.
-- [ ] implement the shortest path algorithm (Dijkstra's algorithm)
-- [ ] implement minimum spanning tree (MST) algorithm (Kruskal's algorithm)
-- [ ] implement maximum flow problem (Ford-Fulkerson algorithm)
-- [ ] implement minimum cut set (min cut) problem (Karger's algorithm)
-- [ ] implement bipartite matching  (https://en.wikipedia.org/wiki/Bipartite_graph)
-- [ ] implement strongly connected components (SCC) (https://en.wikipedia.org/wiki/Strongly_connected_component)
-- [ ] implement topological sort (DAG) (https://en.wikipedia.org/wiki/Topological_sorting)
-- [ ] implement transitive closure (Warshall's algorithm)
-- [ ] implement unit tests for all methods and functions using pytest (https://docs.pytest.org/en/latest/)
-- [ ] implement documentation using Sphinx (https://www.sphinx-doc.org/en/master/)
-- [ ] implement examples using Jupyter Notebook (https://jupyter.org/)
-- [ ] implement visualization using GraphViz (https://graphviz.readthedocs.io/en/stable/)
-- [ ] implement a web interface using Flask (https://flask.palletsprojects.com/en/1.1.x/)
+- [x] Implement ``to_matrix`` method to convert a graph to an adjacency matrix
+- [x] Implement ``from_matrix`` method to convert an adjacency matrix to a kladia graph
+- [x] Implement operations on graphs: union, intersection
+- [ ] Implement search algorithms, e.g. BFS, DFS, etc.
+- [ ] Implement the shortest path algorithm (Dijkstra's algorithm)
+- [ ] Implement minimum spanning tree (MST) algorithm (Kruskal's algorithm)
+- [ ] Implement maximum flow problem (Ford-Fulkerson algorithm)
+- [ ] Implement minimum cut set (min cut) problem (Karger's algorithm)
+- [ ] Implement bipartite matching  (https://en.wikipedia.org/wiki/Bipartite_graph)
+- [ ] Implement strongly connected components (SCC) (https://en.wikipedia.org/wiki/Strongly_connected_component)
+- [ ] Implement topological sort (DAG) (https://en.wikipedia.org/wiki/Topological_sorting)
+- [ ] Implement transitive closure (Warshall's algorithm)
+- [x] Create unit tests for all methods and functions using pytest (https://docs.pytest.org/en/latest/)
+- [ ] Generate documentation using Sphinx (https://www.sphinx-doc.org/en/master/)
+- [x] Create an examples file
+- [ ] Implement visualization using GraphViz (https://graphviz.readthedocs.io/en/stable/)
+- [ ] Implement a web interface using Flask (https://flask.palletsprojects.com/en/1.1.x/)
