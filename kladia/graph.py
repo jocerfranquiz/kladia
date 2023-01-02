@@ -227,8 +227,6 @@ class Graph:
                             _links |= {(node_k, prop_k): prop_v}
             return _links
 
-
-
     def to_matrix(self) -> list[list[float]]:
         """Get graph as adjacency matrix. If nodes do not exist, return empty matrix.
         :return: Adjacency matrix
@@ -395,7 +393,8 @@ class Graph:
                                                     else:
                                                         pass
                                                 else:
-                                                    b_nodes_copy[b_node_key][node_prop_key] = g_nodes[b_node_key][node_prop_key]
+                                                    b_nodes_copy[b_node_key][node_prop_key] = g_nodes[b_node_key][
+                                                        node_prop_key]
                                             else:
                                                 del b_nodes_copy[b_node_key][node_prop_key]
                                                 # b_nodes_copy[b_node_key][node_prop_key] = 'undefined'
