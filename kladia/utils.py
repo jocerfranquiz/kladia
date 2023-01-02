@@ -28,15 +28,23 @@ def memoize(func):
 
 
 @memoize
-def dict_order(d):
+def dict_nested_order(d):
+    """Calculates how many nested levels a dictionary has.
+dict_nested_order({}) -> -1
+dict_nested_order({'a': 1}) -> 0
+dict_nested_order({'a': {'b': {'c': 1}}}) -> 2
+dict_nested_order({'a': {'b': {'c': 1}}, 'd': 2}) -> 2
+    :param d: dictionary
+    :return: number of nested levels
+    """
     if not isinstance(d, dict):
-        raise TypeError('dict_order function only accepts dictionaries')
-    if not d:  # empty dictionary
-        return -1
-    max_order = -1
+        raise TypeError('dict_nested_order function only accepts dictionaries')
+    # if not d:  # empty dictionary
+    #     return -1
+    max_order = 0
     for value in d.values():
         if isinstance(value, dict):
-            order = dict_order(value)
+            order = dict_nested_order(value)
             if order > max_order:
                 max_order = order
             else:
@@ -103,10 +111,14 @@ if __name__ == "__main__":
     _empty = {0: {0: {1: {}, 2: {}}, 1: {0: {}, 2: {}}, 2: {0: {}, 1: {}, 3: {}}, 3: {2: {}}}}
     print(get_size(_empty))
 
-    # Test dict_order function
-    print(dict_order({}))  # -1
-    print(dict_order({0: None}))  # 0
-    print(dict_order({0: {0: None}}))  # 1
-    print(dict_order({0: {0: {0: None}}}))  # 2
-
-    print(dict_order(_none))  # 2
+    # Test dict_nested_order function
+    d0 = {}
+    print(f' {{d0}} has order {dict_nested_order(d0)}')  # 0
+    d1 = {0: 1}
+    print(f' {d1} has order {dict_nested_order(d1)}')  # 1
+    d2 = {0: {0: None}}
+    print(f' {d2} has order {dict_nested_order(d2)}')  # 2
+    d3 = {0: {0: {0: None}}}
+    print(f' {{d3}} has order {dict_nested_order(d3)}')  # 3
+    d4 = {0: {0: {1: None, 2: None}, 1: {0: None, 2: None}, 2: {0: None, 1: None, 3: None}, 3: {2: None}}}
+    print(f' {d4} has order {dict_nested_order(d4)}')  # 3
