@@ -6,7 +6,7 @@ version: 0.0.1
 """
 
 import pytest
-from kladia.graph import graph, from_nodes_and_links
+from src.kladia.graph import graph, from_nodes_and_links
 
 
 # Path: tests\tests_graph.py

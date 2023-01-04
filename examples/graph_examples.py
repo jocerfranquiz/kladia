@@ -1,5 +1,5 @@
 
-from kladia.graph import graph
+from src.kladia.graph import graph
 
 
 if __name__ == '__main__':

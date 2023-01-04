@@ -6,7 +6,7 @@ version: 0.0.1
 """
 
 import pytest
-from kladia.utils import dict_nested_order, get_size
+from src.kladia import dict_nested_order, get_size
 
 
 # Path: tests\tests_utils.py
