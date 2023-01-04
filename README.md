@@ -1,11 +1,19 @@
 # Kladia 🌿
 
+[![Python](https://img.shields.io/badge/python-v3.8.10%2B-green)](https://www.python.org/)
+
 ### A simple and minimal graph library based on Python dictionaries
 
-**Kladia** is a library that provides a simple and easy way to work with graph data structures in Python. 
-**Kladia graphs** are dictionaries simple enough to be used and adapted to any other libraries and frameworks.
+**Kladia** is a library that provides a simple and easy way to work with graphs data structures in Python, by representing them as dictionaries. 
+**Kladia graphs** are simple enough to be used and adapted to any other libraries and frameworks, including Pandas, Numpy, Scikit-learn, etc.
 
-## Ok, but how?
+## Installation
+
+```bash
+pip install kladia
+```
+
+## Ok, but how it works?
 
 Using **ONLY Python dictionaries** we can easily construct a simple **two node directed graph** in 4 steps:
 
