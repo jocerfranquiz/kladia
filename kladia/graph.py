@@ -20,7 +20,7 @@ def from_nodes_and_links(nodes: dict = None, links: dict = None) -> object:
     """Add nodes and links to graph
     :param nodes: dict of nodes
     :param links: dict of links
-    :return: Graph instance
+    :return: Graphs instance
     """
     if not isinstance(nodes, dict):
         raise TypeError("Nodes must be of type dict")
