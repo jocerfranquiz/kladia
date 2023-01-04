@@ -1,6 +1,6 @@
 # Kladia 🌿
 
-[![Python](https://img.shields.io/badge/python-v3.8.10%2B-green)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-v3.10%2B-blue)](https://www.python.org/)
 
 ### A simple and minimal graph library based on Python dictionaries
 
