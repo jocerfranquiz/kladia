@@ -13,7 +13,7 @@
 pip install kladia
 ```
 
-## Ok, but how it works?
+## How it works?
 
 Using **ONLY Python dictionaries** we can easily construct a simple **two node directed graph** in 4 steps:
 
