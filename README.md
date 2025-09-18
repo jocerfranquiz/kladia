@@ -120,7 +120,7 @@ the *olive tree*.
 
 - [x] Implement ``to_matrix`` method to convert a graph to an adjacency matrix
 - [x] Implement ``from_matrix`` method to convert an adjacency matrix to a kladia graph
-- [x] Implement operations on graphs: union, intersection
+- [ ] Implement operations on graphs: union, intersection
 - [ ] Implement search algorithms, e.g. BFS, DFS, etc.
 - [ ] Implement the shortest path algorithm (Dijkstra's algorithm)
 - [ ] Implement minimum spanning tree (MST) algorithm (Kruskal's algorithm)
